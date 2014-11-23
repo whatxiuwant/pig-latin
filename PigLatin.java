@@ -1,91 +1,126 @@
-package stpkg;
+package plpkg;
 
-public class PigLatin {
+public class pigLatin {
 
-	/*
-	 * If "y" is the first letter, it is a consonant. Otherwise, "y" is a vowel.
-	 * All leading consonants are moved to the end of the word, followed by the letters "ay"
-	 * If the word begins with a vowel and ends in a consonant, "ay" is added to the end of the word
-	 * If the word begins with a vowel and ends in a vowel, "yay" is added to the end of the word, unless the resulting word would end in "yyay".
-	 * In this case, only "ay" is added to the end of the word.
-	 */
-	
 	public static void main(String[] args) {
-		String str = "Kelly loves Java, but not this class.";
-		System.out.println(display(pigWord(str)));
+		System.out.println(leading("*(&$@#UJGHEi"));
+		System.out.println(trailing("h&*f&83"));
+		
+		String[] words = convert("!This code doesn't work :(");
+		for (int i = 0; i < words.length; i++)
+			System.out.print(words[i] + " ");
+	}
+
+	public static String[] separate(String s) {
+		return s.split(" ");
 	}
 	
-	public static String beginPigLatin(String s) {
+	public static boolean isChar(char c) {
+		return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
+	}
+	
+	public static boolean isAVowel(String c) {
 		String vowels = "aeiou";
-		int idx = 1;
 		
-		for (int i = 0; i < s.length()-1; i++)
-			if (s.substring(i, i+1).equalsIgnoreCase(vowels.substring(i, i+1)))
+		for (int i = 0; i < vowels.length() - 1; i++)
+			if (c.equalsIgnoreCase(vowels.substring(i, i + 1)))
+				return true;
+		
+		return false;
+	}
+	
+	public static boolean isYConsonant(String s) {
+		if (s.charAt(0) == 'Y' || s.charAt(0) == 'y')
+			return true;
+		
+		return false;
+	}
+	
+	public static String leading(String s) {
+		String leading = "";
+		int idx = 0;
+		
+		for (int i = 0; i < s.length() - 1; i++)
+			if (!isChar(s.charAt(i)))
 				idx++;
 		
-		String fLetter = s.substring(0, idx);
-		String[] words = s.split(fLetter);
+		return leading = s.substring(0, idx);
+	}
+	
+	public static String trailing(String s) {
+		String trailing = "";
+		int idx = 0;
 		
-		return s = words[1] + fLetter;
-	}
-	
-	public static String[] separate(String s) {
-		String[] words = s.split(" ");
+		for (int i = s.length() - 1; i >= 0; i--) 
+			if (!isChar(s.charAt(i)))
+				idx++;
+			else
+				break;
 		
-		return words;
+		return trailing = s.substring(s.length() - idx);
 	}
 	
-	public static boolean isFirstLetterVowel(String s) {
-		String vowels = "aeiou";
+	public static String setWord(String s) {
+		int idx = 0;
+
+		//if (s.substring(s.length() - 1) == "y" || s.substring(s.length() - 1) == "Y")
+			//return s;
+		//else { 
+			for (int i = 0; i < s.length() - 1; i++) {
+			if (!isAVowel(s.substring(i, i + 1)))
+				idx++;
+			else
+				break;
+		}//}
 		
-		for (int i = 0; i < vowels.length(); i++)
-			if (s.substring(0, 1).equalsIgnoreCase(vowels.substring(i, i+1)))
-				return true;
-		return false;
+		return s.substring(idx) + s.substring(0, idx);
 	}
 	
-	public static boolean isLastLetterVowel(String s) {
-		String vowels = "aeiou";
+	public static String setPigWord(String s) {
+		String fLetter = s.substring(0, 1);
+		String lLetter = s.substring(s.length() - 1);
 		
-		for (int i = 0; i < vowels.length(); i++)
-			if (s.substring(s.length()-1).equalsIgnoreCase(vowels.substring(i, i+1)))
-				return true;
-		return false;
+		if (isYConsonant(fLetter))
+			return "ay";
+		else if (!isAVowel(fLetter) && !isAVowel(lLetter))
+			return "ay";
+		else if (!isAVowel(fLetter) && isAVowel(lLetter))
+			return "ay";
+		else if (isAVowel(fLetter) && !isAVowel(lLetter))
+			return "ay";
+		else 
+			return "yay";
 	}
 	
-	public static boolean checkYyay(String s) {
-		return s.indexOf("yyay") >= 0;
+	public static boolean allNonAlpha(String s) {
+		for (int i = 0; i < s.length(); i++)
+			if (isChar(s.charAt(i)))
+				return false;
+		
+		return true;
 	}
 	
-	public static String[] pigWord(String s) {
+	public static String[] convert(String s) {
 		String[] words = separate(s);
 		
 		for (int i = 0; i < words.length; i++) {
-			words[i] = beginPigLatin(words[i]);
-		
-			if (isFirstLetterVowel(s) && isLastLetterVowel(s)) {
-				words[i] += "yay";	//exception for y
-				if (checkYyay(words[i]))
-					words[i].replace("yyay", "ay");
-			}
-			else if (isFirstLetterVowel(s) && !isLastLetterVowel(s))
-				words[i] += "ay";
-			else if (!isFirstLetterVowel(s) && isLastLetterVowel(s))
-				words[i] += "ay";
-			if (!isFirstLetterVowel(s) && !isLastLetterVowel(s))
-				words[i] += "ay";
+			if (allNonAlpha(words[i]))
+				break;
+			
+			String leading = leading(words[i]);
+			String trailing = trailing(words[i]);
+			
+			if (leading.length() == 0 && trailing.length() == 0 || leading.length() == 0)
+				words[i] = words[i];
+			else if (trailing.length() == 0)
+				words[i] = words[i].substring(leading.length());
+			else
+				words[i] = words[i].substring(leading.length(), trailing.length());
+			
+			String pigWord = setPigWord(words[i]);
+			words[i] = setWord(words[i]) + pigWord + leading + trailing;
 		}
 		
 		return words;
-	}
-	
-	public static String display(String[] words) {
-		String phrase = "";
-		
-		for (int i = 0; i < words.length; i++) {
-			phrase += words[i] + " ";
-		}
-		
-		return phrase;
 	}
 }
