@@ -5,10 +5,7 @@ public class pigLatin {
 	public static void main(String[] args) {
 		System.out.println(leading("*(&$@#UJGHEi"));
 		System.out.println(trailing("h&*f&83"));
-		
-		String[] words = convert("!This code doesn't work :(");
-		for (int i = 0; i < words.length; i++)
-			System.out.print(words[i] + " ");
+		System.out.println(display("!hello master Kelly#$ yay"));
 	}
 
 	public static String[] separate(String s) {
@@ -62,16 +59,16 @@ public class pigLatin {
 	
 	public static String setWord(String s) {
 		int idx = 0;
-
-		//if (s.substring(s.length() - 1) == "y" || s.substring(s.length() - 1) == "Y")
-			//return s;
-		//else { 
+		
+		if ((s.substring(0, 1).equalsIgnoreCase("y")) && (s.substring(s.length() - 1).equalsIgnoreCase("y")))
+			return s.substring(1);
+		else { 
 			for (int i = 0; i < s.length() - 1; i++) {
 			if (!isAVowel(s.substring(i, i + 1)))
 				idx++;
 			else
 				break;
-		}//}
+		}}
 		
 		return s.substring(idx) + s.substring(0, idx);
 	}
@@ -110,17 +107,25 @@ public class pigLatin {
 			String leading = leading(words[i]);
 			String trailing = trailing(words[i]);
 			
-			if (leading.length() == 0 && trailing.length() == 0 || leading.length() == 0)
-				words[i] = words[i];
-			else if (trailing.length() == 0)
+			if (trailing.length() == 0)
 				words[i] = words[i].substring(leading.length());
 			else
-				words[i] = words[i].substring(leading.length(), trailing.length());
+				words[i] = words[i].substring(leading.length() - 1, words[i].length() - trailing.length());
 			
 			String pigWord = setPigWord(words[i]);
-			words[i] = setWord(words[i]) + pigWord + leading + trailing;
+			words[i] = leading + setWord(words[i]) + pigWord + trailing;
 		}
 		
 		return words;
+	}
+	
+	public static String display(String s) {
+		String[] words = convert(s);
+		String translated = "";
+		
+		for (int i = 0; i < words.length; i++)
+			translated += words[i] + " ";
+		
+		return translated;
 	}
 }

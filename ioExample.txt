@@ -1,0 +1,6 @@
+A file object encapsulates the properties of a file or a path, but it does not contain the methods for creating a file or for writing or reading a file (reffered to as data input and output, or I/O for short). 
+In order to perform I/O, you need to create objects using appropriate Java I/O classes.
+The object contains the methods for reading data from a file and writing data to a file. 
+There are two types of files: text and binary. Text files are essentially characters on disk. 
+This section introduces how to read and write strings and numeric values using Scanner and PrintWriter classes. 
+We will discuss binary files at a later date.
