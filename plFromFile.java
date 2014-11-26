@@ -17,7 +17,6 @@ public class plFromFile {
 		}
 		
 		Scanner scanner = new Scanner(input);
-		//System.exit(0); means everything runs fine
 		
 		File output = new File("translateIOExample.txt");
 		if (output.exists()) {

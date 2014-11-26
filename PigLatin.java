@@ -5,7 +5,7 @@ public class pigLatin {
 	public static void main(String[] args) {
 		System.out.println(leading("*(&$@#UJGHEi"));
 		System.out.println(trailing("h&*f&83"));
-		System.out.println(display("!hello master Kelly#$ yay"));
+		System.out.println(display("!hello master Kelly yay"));
 	}
 
 	public static String[] separate(String s) {
